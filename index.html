@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Target GPA Calculator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f4f9;
+      }
+      .container {
+        width: 100%;
+        max-width: 400px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px;
+        width: 100%;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .result {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+        text-align: center;
+      }
+      .info {
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Target GPA Calculator</h1>
+
+      <div class="info">
+        <p>If you are from CSE 21-25 batch:</p>
+        <p>Total credits are 138 and additional credits are 17</p>
+      </div>
+
+      <label for="currentGPA">Current GPA:</label>
+      <input
+        type="number"
+        id="currentGPA"
+        min="0"
+        max="10"
+        step="0.01"
+        placeholder="Enter current GPA"
+        required
+      />
+
+      <label for="targetGPA">Target GPA:</label>
+      <input
+        type="number"
+        id="targetGPA"
+        min="0"
+        max="10"
+        step="0.01"
+        placeholder="Enter target GPA"
+        required
+      />
+
+      <label for="currentCredits">Current Credits:</label>
+      <input
+        type="number"
+        id="currentCredits"
+        min="1"
+        placeholder="Enter current credits"
+        value="138"
+        required
+      />
+
+      <label for="additionalCredits">Additional Credits:</label>
+      <input
+        type="number"
+        id="additionalCredits"
+        min="1"
+        placeholder="Enter additional credits"
+        value="17"
+        required
+      />
+
+      <button onclick="calculateRequiredGPA()">Calculate Required GPA</button>
+
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      function calculateRequiredGPA() {
+        const currentGPA = parseFloat(
+          document.getElementById("currentGPA").value
+        );
+        const targetGPA = parseFloat(
+          document.getElementById("targetGPA").value
+        );
+        const currentCredits = parseFloat(
+          document.getElementById("currentCredits").value
+        );
+        const additionalCredits = parseFloat(
+          document.getElementById("additionalCredits").value
+        );
+
+        // Calculate the total grade points for completed semesters
+        const totalGradePoints = currentGPA * currentCredits;
+
+        // Calculate total credits including upcoming semester
+        const totalCredits = currentCredits + additionalCredits;
+
+        // Calculate required GPA for the upcoming semester to reach target GPA
+        const requiredGPA =
+          (targetGPA * totalCredits - totalGradePoints) / additionalCredits;
+
+        // Display result
+        const resultDiv = document.getElementById("result");
+        if (requiredGPA <= 10.0) {
+          resultDiv.innerHTML = `To achieve a target GPA of ${targetGPA}, you need an average GPA of approximately <strong>${requiredGPA.toFixed(
+            2
+          )}</strong> for the upcoming semester.`;
+        } else {
+          resultDiv.innerHTML = `It may not be possible to reach a GPA of ${targetGPA} with the additional ${additionalCredits} credits.`;
+        }
+      }
+    </script>
+  </body>
+</html>
